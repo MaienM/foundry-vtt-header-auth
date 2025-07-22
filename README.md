@@ -2,7 +2,7 @@
 
 This project is a script that when ran patches the code of Foundry VTT such that it will use the headers that are
 provided by an authentication proxy to authenticate the users. **This will completely replace password-based
-authentication**, so make sure that all users will have the right headers set!
+authentication**, so make sure that all users will have the right headers set! Use this at your own risk.
 
 ## Functionality
 
