@@ -1,0 +1,25 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: |
+            Authentication patches for Foundry VTT ${{ github.ref_name }} and later.
+          files: |
+            patches.sh
