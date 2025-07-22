@@ -16,6 +16,26 @@ determined, and then the authentication proceeds as follows:
 - If neither role is present the user will be presented with the login screen, but they will not be able to login since
   password-based authentication is disabled.
 
+### Examples
+
+<!-- It's dumb that GitHub requires you to manage these videos outside the repo. -->
+
+Logging in with admin access & joining the game:
+
+https://github.com/user-attachments/assets/a485bff5-3323-4758-8c47-776b2fd98880
+
+Logging in with admin access & going to the setup:
+
+https://github.com/user-attachments/assets/6f4258d7-30fb-4022-9bf3-2b148cebcce1
+
+Logging in with player access & automatically joining the game:
+
+https://github.com/user-attachments/assets/2550b9e5-070f-4ccb-820c-e56bff18eb80
+
+Logging in with player access without a matching player in the game:
+
+https://github.com/user-attachments/assets/5f0b3f3a-01ef-45a7-98da-5e609ef02f58
+
 ## Installation
 
 This is intended to be used via the `CONTAINER_PATCHES` or `CONTAINER_PATCH_URLS` environment of [felddy's
