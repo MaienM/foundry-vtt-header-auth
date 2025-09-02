@@ -76,6 +76,7 @@ option](https://oauth2-proxy.github.io/oauth2-proxy/configuration/overview?_high
 | Name | Purpose | Default |
 | --- | --- | --- |
 | `HEADER_USERNAME` | The header to look at for the username. Usernames are matched (ignoring case) with the names of the players in the game. | `x-auth-request-preferred-username` |
-| `HEADER_ROLES` | The header to look at for the roles. This must be a comma-separated list. | `x-auth-request-groups` |
+| `HEADER_ROLES` | The header to look at for the roles. | `x-auth-request-groups` |
+| `HEADER_ROLES_SEPARATOR` | The symbol that is used to separate the roles in the header. | `,` |
 | `ROLE_PLAYER` | The role that marks someone as a player. | `role:foundry-vtt:player` |
 | `ROLE_ADMIN` | The role that marks someone as an admin. | `role:foundry-vtt:admin` |
