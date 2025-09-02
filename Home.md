@@ -1,0 +1,1 @@
+Welcome to the foundry-vtt-header-auth wiki!
