@@ -2,6 +2,7 @@
 
 HEADER_USERNAME="${HEADER_USERNAME:-"x-auth-request-preferred-username"}"
 HEADER_ROLES="${HEADER_ROLES:-"x-auth-request-groups"}"
+HEADER_ROLES_SEPARATOR="${HEADER_ROLES_SEPARATOR:-","}"
 ROLE_PLAYER="${ROLE_PLAYER:-"role:foundry-vtt:player"}"
 ROLE_ADMIN="${ROLE_ADMIN:-"role:foundry-vtt:admin"}"
 
@@ -45,10 +46,10 @@ patch_append() (
 )
 
 # Replace admin password check with header check.
-patch_sed admin-header-login resources/app/dist/sessions.mjs "s/testPassword(\(\w\+\)\.body\.adminPassword,\w\+,getSalt(config.passwordSalt))/(s.headers['$HEADER_ROLES'].split(',').includes('$ROLE_ADMIN'))/"
+patch_sed admin-header-login resources/app/dist/sessions.mjs "s/testPassword(\(\w\+\)\.body\.adminPassword,\w\+,getSalt(config.passwordSalt))/(s.headers['$HEADER_ROLES'].split('$HEADER_ROLES_SEPARATOR').includes('$ROLE_ADMIN'))/"
 
 # Replace user password check with header check. In addition to the player themselves admins will also be allowed to log in as any player.
-patch_sed user-header-login resources/app/dist/sessions.mjs "s/testPassword(\w\+,\(\w\+\)\.password,\w\+.passwordSalt)/((s.headers['$HEADER_USERNAME'].toLowerCase() === \1.name.toLowerCase() \&\& s.headers['$HEADER_ROLES'].split(',').includes('$ROLE_PLAYER')) || s.headers['$HEADER_ROLES'].split(',').includes('$ROLE_ADMIN'))/"
+patch_sed user-header-login resources/app/dist/sessions.mjs "s/testPassword(\w\+,\(\w\+\)\.password,\w\+.passwordSalt)/((s.headers['$HEADER_USERNAME'].toLowerCase() === \1.name.toLowerCase() \&\& s.headers['$HEADER_ROLES'].split('$HEADER_ROLES_SEPARATOR').includes('$ROLE_PLAYER')) || s.headers['$HEADER_ROLES'].split('$HEADER_ROLES_SEPARATOR').includes('$ROLE_ADMIN'))/"
 
 # Hide password fields.
 patch_append hide-password-fields resources/app/public/css/foundry2.css << END
@@ -59,7 +60,7 @@ patch_append hide-password-fields resources/app/public/css/foundry2.css << END
 END
 
 # Pass information about the user info from the headers to the client side. This is used for auto-login behavior, as well as to hide elements that aren't relevant for players.
-patch_sed track-header-info resources/app/dist/sessions.mjs "s/global\.logger\.info(\`Created client session \${\(\w\+\)\.id}\`)/(t.headerInfo = { username: s.headers['$HEADER_USERNAME'], isAdmin: s.headers['$HEADER_ROLES']?.split(',')?.includes('$ROLE_ADMIN') ?? false }), &/"
+patch_sed track-header-info resources/app/dist/sessions.mjs "s/global\.logger\.info(\`Created client session \${\(\w\+\)\.id}\`)/(t.headerInfo = { username: s.headers['$HEADER_USERNAME'], isAdmin: s.headers['$HEADER_ROLES']?.split('$HEADER_ROLES_SEPARATOR')?.includes('$ROLE_ADMIN') ?? false }), &/"
 patch_sed track-header-info resources/app/dist/server/sockets.mjs 's/\(\w\+\)\.sessionId=\(\w\+\)\.id/&,\1.headerInfo = \2.headerInfo/'
 patch_sed track-header-info resources/app/public/scripts/foundry.mjs 's/id = response\.sessionId;/& localStorage.headerInfo = JSON.stringify(response.headerInfo);/'
 patch_append track-header-info resources/app/public/scripts/foundry.mjs << END

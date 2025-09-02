@@ -6,8 +6,6 @@ This guide supposes you have a working Authentik and Traefik setup on docker. Sp
 
 ## Modifying the patch
 
-You need to modify the patch (`patches.sh`) so that all `split(',')` calles are replaced with `split('|') as Authentik uses `|`as a seprator for multiple roles. This is needed to make the patch work with Authentik. I'm bad at regex and js, so I didn't modify the patch source code to support both`,`and`|`, but you can do it if you want to.
-
 You can skip the next 2 sections if you follow this [Tutorial](https://docs.ibracorp.io/authentik/authentik/docker-compose/traefik-forward-auth-single-applications) to set up Authentik with Traefik Forward Auth.
 
 ## Traefik Forward Auth Configuration
@@ -70,6 +68,7 @@ foundry:
 
       - HEADER_USERNAME=x-authentik-username    # This needs to be lowercase and present as X-authentik-username in traefik dynamic config
       - HEADER_ROLES=x-authentik-groups         # As above, but X-authentik-groups
+      - HEADER_ROLES_SEPARATOR='|'              # The default is ',', but Authentik uses '|'.
       - ROLE_PLAYER=foundry-player              # This is the group name you set in Authentik for players
       - ROLE_ADMIN=foundry-admin                # This is the group name you set in Authentik for admins
 
