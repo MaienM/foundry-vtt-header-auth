@@ -5,6 +5,7 @@ HEADER_ROLES="${HEADER_ROLES:-"x-auth-request-groups"}"
 HEADER_ROLES_SEPARATOR="${HEADER_ROLES_SEPARATOR:-","}"
 ROLE_PLAYER="${ROLE_PLAYER:-"role:foundry-vtt:player"}"
 ROLE_ADMIN="${ROLE_ADMIN:-"role:foundry-vtt:admin"}"
+AUTO_PROVISION="${AUTO_PROVISION:-"false"}"
 
 # usage: $0 patch-name file [sed-expression]
 # Utility to use sed to patch a file, verifying that it actually changed something.
@@ -174,3 +175,26 @@ patch_append hide-non-admin-setup resources/app/public/css/foundry2.css << END
 		margin-top: 0.5em;
 	}
 END
+
+# If enabled, create missing users with the PLAYER role when they login.
+if [ "$AUTO_PROVISION" = "true" ]; then
+	patch_append auto-provision-function resources/app/dist/server/views/join.mjs << END
+	async function _autoProvisionAndDumpUsers(session) {
+		const users = await db.User.dump();
+
+		if (session.headerInfo.isAdmin) {
+			return users;
+		}
+
+		const username = session.headerInfo.username.toLowerCase();
+		if (users.find((user) => user.name.toLowerCase() === username)) {
+			return users;
+		}
+
+		await db.User.create({name: username, role: 1});
+		return db.User.dump();
+	}
+END
+
+	patch_sed auto-provision-call-function resources/app/dist/server/views/join.mjs "s/users:await db\.User\.dump()/users:await _autoProvisionAndDumpUsers(s)/"
+fi

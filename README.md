@@ -80,6 +80,7 @@ option](https://oauth2-proxy.github.io/oauth2-proxy/configuration/overview?_high
 | `HEADER_ROLES_SEPARATOR` | The symbol that is used to separate the roles in the header. | `,` |
 | `ROLE_PLAYER` | The role that marks someone as a player. | `role:foundry-vtt:player` |
 | `ROLE_ADMIN` | The role that marks someone as an admin. | `role:foundry-vtt:admin` |
+| `AUTO_PROVISION` | If set to `true`, players will be automatically created for users with the player role when they login.   | `false` |
 
 Check [the wiki](https://github.com/MaienM/foundry-vtt-header-auth/wiki) for more detailed (community-contributed) setup
 instructions.
