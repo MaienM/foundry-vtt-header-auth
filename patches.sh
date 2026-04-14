@@ -62,7 +62,7 @@ END
 # Pass information about the user info from the headers to the client side. This is used for auto-login behavior, as well as to hide elements that aren't relevant for players.
 patch_sed track-header-info resources/app/dist/sessions.mjs "s/global\.logger\.info(\`Created client session \${\(\w\+\)\.id}\`)/(t.headerInfo = { username: s.headers['$HEADER_USERNAME'], isAdmin: s.headers['$HEADER_ROLES']?.split('$HEADER_ROLES_SEPARATOR')?.includes('$ROLE_ADMIN') ?? false }), &/"
 patch_sed track-header-info resources/app/dist/server/sockets.mjs 's/\(\w\+\)\.sessionId=\(\w\+\)\.id/&,\1.headerInfo = \2.headerInfo/'
-patch_sed track-header-info resources/app/public/scripts/foundry.mjs 's/id = response\.sessionId;/& localStorage.headerInfo = JSON.stringify(response.headerInfo);/'
+patch_sed track-header-info resources/app/public/scripts/foundry.mjs 's/id = response?\.sessionId;/& if (response) { localStorage.headerInfo = JSON.stringify(response.headerInfo); }/'
 patch_append track-header-info resources/app/public/scripts/foundry.mjs << END
 	window.withHeaderInfo = (cb) => {
 		if (localStorage.headerInfo) {
