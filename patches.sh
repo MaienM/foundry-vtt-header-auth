@@ -110,7 +110,7 @@ patch_append auto-login resources/app/public/scripts/foundry.mjs << END
 			const joinButton = form.querySelector('button[name="join"]');
 
 			// Try to find & select the matching user, aborting if none is found.
-			const item = Array.from(select?.options ?? []).find((i) => i.textContent.toLowerCase() === headerInfo.username);
+			const item = Array.from(select?.options ?? []).find((i) => i.textContent.toLowerCase() === headerInfo.username.toLowerCase());
 			if (!item) {
 				console.warn('Cannot find user to auto-login as.');
 				showForm();
