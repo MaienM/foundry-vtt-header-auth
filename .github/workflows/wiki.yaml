@@ -1,0 +1,36 @@
+name: Wiki
+
+on:
+  push:
+    branches:
+      - wiki
+
+permissions:
+  contents: write
+
+jobs:
+  wiki:
+    name: Publish to GitHub Wiki
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout wiki branch
+        uses: actions/checkout@master
+        with:
+          repository: ${{github.repository}}
+          ref: wiki
+          fetch-depth: 999999999
+          path: repo
+
+      - name: Checkout wiki repo
+        uses: actions/checkout@master
+        with:
+          repository: ${{github.repository}}.wiki
+          path: wiki
+
+      - name: Push wiki branch to wiki repo
+        run: |
+          cd "$GITHUB_WORKSPACE/wiki"
+          git remote add repo "$GITHUB_WORKSPACE/repo"
+          git fetch repo wiki
+          git checkout repo/wiki -B master
+          git push origin master
