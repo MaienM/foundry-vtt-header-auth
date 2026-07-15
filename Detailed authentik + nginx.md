@@ -156,21 +156,23 @@ Redeploy using `docker compose up -d`
 
 ## How to authorize users
 
-In Foundry, each user has to have their own account using a distinct username. Please follow the [Foundry documentation ↗](https://foundryvtt.com/article/users/) to create one.
+> [!IMPORTANT]
+> In Foundry, each user has to have their own account using a distinct username. Please follow the [Foundry documentation ↗](https://foundryvtt.com/article/users/) to create one.
 
-In authentik, each user has to have their own account. See [authentik's official documentation ↗](https://docs.goauthentik.io/users-sources/user/user_basic_operations/#create-a-user) on this.
-Add the authentik user to either the foundry-admins or foundry-players group from above.
-Depending on your chosen way to handle Foundry username matching, certain modifications have to be made:
+> [!IMPORTANT]
+> In authentik, each user has to have their own account. See [authentik's official documentation ↗](https://docs.goauthentik.io/users-sources/user/user_basic_operations/#create-a-user) on this.
 
-#### The easy way
-Ensure that the authentik Username field value is the exact same as the Foundry Username.
+1. Add the new or existing authentik user to either the foundry-admins or foundry-players group from above.
+2. Depending on your chosen way to handle Foundry username matching, certain modifications have to be made:
+   - The easy way
+     > Ensure that the authentik Username field value is the exact same as the Foundry Username.
 
-#### The hard way
-Add the required attributes for the authentik user
-  ```yaml
-  foundry:
-    user: FoundryUserName
-  ```
+   - The hard way
+     > Add the required attributes for the authentik user
+     > ```yaml
+     > foundry:
+     >   user: FoundryUserName
+     > ```
 
 ## Profit?
 
